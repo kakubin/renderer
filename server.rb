@@ -1,7 +1,9 @@
 require "socket"
 require_relative "./rack"
+require_relative "./timer"
 
 app = Application.new
+timer = Timer.new(app)
 
 port = 3000
 server = TCPServer.open(port)
@@ -25,7 +27,7 @@ loop do
     end
 
     # call app with request information
-    response = app.call(env)
+    response = timer.call(env)
 
     status = response[0]
     headers = response[1]
@@ -34,7 +36,7 @@ loop do
     socket.write "HTTP/1.1 #{status} OK\r\n"
 
     headers.each do |key, value|
-      socket.write "#{key}: #{value}"
+      socket.write "#{key}: #{value}\r\n"
     end
 
     socket.write "\r\n"
