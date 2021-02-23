@@ -1,10 +1,5 @@
 require "socket"
-
-class Application
-  def call(env)
-    [200, {}, ["Hello World: " + Time.now.to_s]]
-  end
-end
+require_relative "./rack"
 
 app = Application.new
 
